@@ -131,18 +131,23 @@ class TestProductRoutes(TestCase):
         self.assertEqual(new_product["category"], test_product.category.name)
 
         #
-        # Uncomment this code once READ is implemented
+        #  READ is implemented
         #
-
-        # # Check that the location header was correct
-        # response = self.client.get(location)
-        # self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # new_product = response.get_json()
-        # self.assertEqual(new_product["name"], test_product.name)
-        # self.assertEqual(new_product["description"], test_product.description)
-        # self.assertEqual(Decimal(new_product["price"]), test_product.price)
-        # self.assertEqual(new_product["available"], test_product.available)
-        # self.assertEqual(new_product["category"], test_product.category.name)
+    def test_get_product(self): 
+        """
+        retrieve a single product
+        this endpoint will return a product nased on its id
+        """
+        test_product = self._create_products(1)[0]
+        # Check that the location header was correct
+        response = self.client.get(f"{BASE_URL}/{test_product.id}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(data["name"], test_product.name)
+        self.assertEqual(data["description"], test_product.description)
+        self.assertEqual(Decimal(data["price"]), test_product.price)
+        self.assertEqual(data["available"], test_product.available)
+        self.assertEqual(data["category"], test_product.category.name)
 
     def test_create_product_with_no_name(self):
         """It should not Create a Product without a name"""
@@ -178,3 +183,24 @@ class TestProductRoutes(TestCase):
         data = response.get_json()
         # logging.debug("data = %s", data)
         return len(data)
+
+    #
+    # read a product
+    #
+    @app.route("/products/<int:product_id>", methods=["GET"])
+    def get_products(product_id):
+        """
+        retrieve a single product
+        this endpointwill return a product based on its id
+        """
+
+        app.logger.info("Reqiest to retroeve a product with id [%s]", product_id)
+
+        product = Product.find(product_id)
+        if not product:
+            abort(status.HTTP_404_NOT_FOUN, f"product with id '{product_id}' was not found.")
+
+        app.logger.info("Returning product: %s", product.name)
+        return product.serialize(), status.HTTP_200_OK
+
+    

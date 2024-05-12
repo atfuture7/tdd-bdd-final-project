@@ -178,12 +178,12 @@ class TestProductModel(unittest.TestCase):
         products = ProductFactory.create_batch(10)
         for product in products:
             product.create()
-        category = product[0].category
+        category = products[0].category
         count = len([product for product in products if product.category == category])
         found = Product.find_by_category(category)
-        self.assertEqual(found.count(). count)
+        self.assertEqual(found.count(), count)
         for product in found:
             self.assertEqual(product.category, category)
 
-            
+
 
