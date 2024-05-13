@@ -135,24 +135,24 @@ class TestProductRoutes(TestCase):
 
 
 
-#    def test_create_product_with_no_name(self):
-#        """It should not Create a Product without a name"""
-#        product = self._create_products()[0]
-#        new_product = product.serialize()
-#        del new_product["name"]
-#        logging.debug("Product no name: %s", new_product)
-#        response = self.client.post(BASE_URL, json=new_product)
-#        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-#
-#    def test_create_product_no_content_type(self):
-#        """It should not Create a Product with no Content-Type"""
-#        response = self.client.post(BASE_URL, data="bad data")
-#        self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
-#
-#    def test_create_product_wrong_content_type(self):
-#        """It should not Create a Product with wrong Content-Type"""
-#        response = self.client.post(BASE_URL, data={}, content_type="plain/text")
-#        self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+    def test_create_product_with_no_name(self):
+        """It should not Create a Product without a name"""
+        product = self._create_products()[0]
+        new_product = product.serialize()
+        del new_product["name"]
+        logging.debug("Product no name: %s", new_product)
+        response = self.client.post(BASE_URL, json=new_product)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_product_no_content_type(self):
+        """It should not Create a Product with no Content-Type"""
+        response = self.client.post(BASE_URL, data="bad data")
+        self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+
+    def test_create_product_wrong_content_type(self):
+        """It should not Create a Product with wrong Content-Type"""
+        response = self.client.post(BASE_URL, data={}, content_type="plain/text")
+        self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
     #
     # ADD YOUR TEST CASES HERE
